@@ -1,1 +1,227 @@
-<p>Testing123</p>
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Anonymous CVPR Submission 4433</title>
+
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    
+    <script src="js/app.js"></script>
+</head>
+
+<body>
+    <div class="container" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                Learning to Imitate Object Interactions <br> from Internet Videos <br>
+                <small>
+                  Anonymous CVPR Submission <br> Paper ID 4433
+                </small>
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul class="list-inline">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <center>
+                    <video id="v0" width="100%" autoplay loop muted>
+                        <source src="media/vid/banner_video.mp4" type="video/mp4" />
+                    </video>
+                </center>
+                <p class="text-justify caption"><i>Imitating object interactions from Internet videos.</i> Every robot video (right panel) starts with the robot picking up the object from the table and ends in a segment where the robot imitates the human motion (left panel)</p>
+                <h3>
+                    Abstract
+                </h3>
+                <p class="text-justify">
+We study the problem of imitating object interactions from Internet videos. This requires understanding the hand-object interactions in 4D, spatially in 3D and over time, which is challenging due to mutual hand-object occlusions. In this paper we make two main contributions: (1) a novel reconstruction technique RHOV (Recovering Hands and Objects from Videos), which reconstructs 4D trajectories of both the hand and the object using image cues and temporal smoothness constraints; (2) a system for imitating object trajectories in a physics simulator with reinforcement learning. We apply our reconstruction technique to 100 challenging internet videos. We further show that our approach can successfully imitate a range of different object interactions in a physics simulator. We adopt an object-centric approach that is not limited to human-like end-effectors and can imitate interactions using different embodiments, like a standard 7 DoF robotic arm with a parallel jaw gripper.
+                </p>
+                <tr>
+                   <h3>Approach</h3>
+                    <td colspan="2">
+                        <p class="text-justify">We present an approach for imitating object interactions from Internet videos. We first reconstruct hand-object trajectories in 4D, 3D plus time. We then train a policy to imitate the reconstructed trajectory with reinforcement learning.</p>
+                        <br>
+                        <center>
+                            <img src="media/pipeline/figure2.png" width="100%">
+                        </center>
+                        <br>
+                    </td>
+                </tr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                   Reconstructions from Internet Videos
+                </h3>
+                <p class="text-justify">
+                    To reconstruct hands and objects from Internet videos, we introduce an optimization-based technique, called RHOV (for Reconstructing Hands and Objects from Videos), leveraging 2D spatial cues (keypoints, masks, depth) and temporal smoothness constraints (4D, optical flow). We show example RHOV reconstructions on Internet videos below: 
+                </p>
+                <br>
+                <center>
+                    <video id="v2" width="80%" autoplay loop muted>
+                        <source src="media/vid/in_the_wild.webm" type="video/webm" />
+                    </video>
+                <p class="text-center caption" style="width: 80%">Hand-object trajectories produced by RHOV overlaid on internet videos (top) seen from six different viewpoints (bottom).</p>
+                </center>
+                <br>
+                <video width="100%" autoplay loop muted>
+                    <source src="media/dataset/grid.webm" type="video/webm" />
+                </video>
+                <p class="text-center caption">RHOV reconstructions for 100 Internet videos from the <a href="https://fouheylab.eecs.umich.edu/~dandans/projects/100DOH/">100 Days of Hands</a> dataset.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                   Imitating Object Interactions
+                </h3>
+                <p class="text-justify">
+                    Given the reconstructed 4D trajectory, we learn to imitate the object interaction with reinforcement learning in a physics simulator. We compute the reward based on the object pose distance. We show an example run over the course of training:
+                </p>
+                <center>
+                    <video id="14" width="100%" autoplay loop muted>
+                        <source src="media/vid/rl_training.mp4" type="video/mp4" />
+                    </video>
+                </center>
+                <br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Ablation Studies
+                </h3>
+                <p>RHOV jointly reconstructs the hand and object across all frames of the video at once. We conduct a series of ablation studies to further understand the importance of joint reconstruction. In particular, we find that a) reconstructing hands and objects independently produces a reconstruction where the hand is far from the object and b) reconstructing hands and objects for each video frame separately leads to flipping in the object model due to symmetrical ambiguities. </p>
+                <table style="table-layout: fixed ; width: 100%">
+                    <tr>
+                        <td>
+                            <center>
+                                <video width="95%" autoplay loop muted>
+                                    <source src="media/ablation/normal.webm" type="video/webm" />
+                                </video>
+                                <h5>RHOV (default settings)</h5>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video width="95%" autoplay loop muted>
+                                    <source src="media/ablation/independent.webm" type="video/webm" />
+                                </video>
+                                <h5>a) Independent hand and object</h5>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video width="95%" autoplay loop muted>
+                                    <source src="media/ablation/per_frame.webm" type="video/webm" />
+                                </video>
+                                <h5>b) Independent video frames</h5>
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Failure Cases
+                </h3>
+                <p>RHOV relies on 2D image cues to inform 3D hand-object reconstruction and thus is limited by poor 2D segmentation masks and mutual hand-object occlusion. We present a series of failure cases below.</p><br>
+                <table style="table-layout: fixed ; width: 100%">
+                    <tr>
+                        <td>
+                            <center>
+                                <video id="v6" width="99%" autoplay loop muted>
+                                    <source src="media/failure/changing_object_shape.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video id="v10" width="99%" autoplay loop muted>
+                                    <source src="media/failure/changing_object_shape_2.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="center-text caption">Changing object model</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <center>
+                                <video id="v1" width="99%" autoplay loop muted>
+                                    <source src="media/failure/bad_hand.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video id="v9" width="99%" autoplay loop muted>
+                                    <source src="media/failure/severe_hand_occlusion.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="center-text caption">Severe Hand Occlusion</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <center>
+                                <video id="v7" width="99%" autoplay loop muted>
+                                    <source src="media/failure/bad_detectron_link_frame_preds.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                        <td>
+                            <center>
+                                <video id="v8" width="99%" autoplay loop muted>
+                                    <source src="media/failure/bad_detectron_temporal_optim.mp4" type="video/mp4" />
+                                </video>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p class="center-text caption">Incorrect 2D segmentation masks</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
